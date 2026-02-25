@@ -30,20 +30,27 @@
   // init theme (default: light)
   applyTheme(getPreferredTheme());
 
-  // subtle card reveal on scroll
+  // staggered card reveal on scroll
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
+          const delay = entry.target.dataset.delay || 0;
+          setTimeout(() => entry.target.classList.add("is-visible"), delay);
           observer.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.16 }
+    { threshold: 0.1 }
   );
 
-  document.querySelectorAll(".card").forEach((card) => observer.observe(card));
+  document.querySelectorAll(".card").forEach((card, i) => {
+    const parent = card.parentElement;
+    const siblings = parent ? Array.from(parent.querySelectorAll(":scope > .card")) : [card];
+    const index = siblings.indexOf(card);
+    card.dataset.delay = index * 80;
+    observer.observe(card);
+  });
 
   // simple gallery lightbox
   const modal = document.querySelector("[data-lightbox-modal]");
