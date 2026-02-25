@@ -1,0 +1,30 @@
+@model List<string>
+
+<section class="section">
+    <div class="container">
+        <div class="card pad">
+            <h1>Qalereya</h1>
+            <p style="margin:0; color: var(--muted);">Grid layout + lightbox preview (placeholder).</p>
+        </div>
+
+        <div style="height:14px;"></div>
+
+        <div class="grid gallery-grid">
+            @for (var i = 0; i < 18; i++)
+            {
+                var src = Model.ElementAtOrDefault(i);
+                <div class="gallery-item" data-lightbox-src="@src">
+                    <div class="noimg">Foto @(i + 1)</div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<div class="modal" data-lightbox-modal role="dialog" aria-modal="true" aria-label="Gallery preview">
+    <div class="modal-inner">
+        <button class="btn" type="button" data-lightbox-close style="position:absolute; margin:14px; z-index:2;">Bağla</button>
+        <img alt="Preview" />
+    </div>
+</div>
+

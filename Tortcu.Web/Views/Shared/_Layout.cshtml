@@ -1,0 +1,112 @@
+@{
+    var title = (ViewData["MetaTitle"] as string) ?? "Tortcu";
+    var desc = (ViewData["MetaDescription"] as string) ?? "";
+    var keys = (ViewData["MetaKeywords"] as string) ?? "";
+    var ogTitle = (ViewData["OgTitle"] as string) ?? title;
+    var ogDesc = (ViewData["OgDescription"] as string) ?? desc;
+    var ogImg = (ViewData["OgImageUrl"] as string) ?? "";
+    var canonical = (ViewData["CanonicalUrl"] as string) ?? "";
+}
+<!doctype html>
+<html lang="az">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@title</title>
+    @if (!string.IsNullOrWhiteSpace(desc))
+    {
+        <meta name="description" content="@desc" />
+    }
+    @if (!string.IsNullOrWhiteSpace(keys))
+    {
+        <meta name="keywords" content="@keys" />
+    }
+    @if (!string.IsNullOrWhiteSpace(canonical))
+    {
+        <link rel="canonical" href="@canonical" />
+    }
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="@ogTitle" />
+    @if (!string.IsNullOrWhiteSpace(ogDesc))
+    {
+        <meta property="og:description" content="@ogDesc" />
+    }
+    @if (!string.IsNullOrWhiteSpace(ogImg))
+    {
+        <meta property="og:image" content="@ogImg" />
+    }
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="nav">
+        <div class="container nav-inner">
+            <a class="brand" href="/">
+                <picture class="brand-mark">
+                    <source srcset="~/images/logo.svg" type="image/svg+xml" />
+                    <img src="~/images/tortcu-logo.png" alt="Tortcu logo" />
+                </picture>
+                <div class="brand-title">
+                    <strong>Tortcu</strong>
+                    <span>Sevgidən ilhamlandıq</span>
+                </div>
+            </a>
+
+            <nav class="nav-links" aria-label="Primary navigation">
+                <a href="/products">Məhsullar</a>
+                <a href="/gallery">Qalereya</a>
+                <a href="/about">Haqqımızda</a>
+                <a href="/contact">Əlaqə</a>
+                <a href="/order" class="pill">Online sifariş</a>
+                <button type="button" class="btn ghost" data-theme-toggle aria-label="Qaranlıq / İşıqlı rejim"></button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div>
+                <div class="brand-title">
+                    <strong>Tortcu</strong>
+                    <span>Sevgidən ilhamlandıq</span>
+                </div>
+                <div class="footer-social">
+                    <a href="https://wa.me/994505761417" target="_blank" rel="noopener" aria-label="WhatsApp">
+                        <img src="~/images/whatsapp.png" alt="WhatsApp" />
+                    </a>
+                    <a href="https://www.instagram.com/tortcu.baku" target="_blank" rel="noopener" aria-label="Instagram">
+                        <img src="~/images/instagram.png" alt="Instagram" />
+                    </a>
+                    <a href="mailto:Tortcu@bk.ru" aria-label="Email">
+                        <img src="~/images/email.png" alt="Email" />
+                    </a>
+                </div>
+                <div style="margin-top:12px; font-size: 13px;">
+                    <span>&copy; @DateTime.Now.Year Tortcu. Bütün hüquqlar qorunur.</span>
+                </div>
+            </div>
+            <div>
+                <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:flex-end; align-items:center;">
+                    <a href="/products">Məhsullar</a>
+                    <a href="/gallery">Qalereya</a>
+                    <a href="/about">Haqqımızda</a>
+                    <a href="/contact">Əlaqə</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    @RenderSection("Schema", required: false)
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
+

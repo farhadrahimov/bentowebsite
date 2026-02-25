@@ -1,0 +1,36 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tortcu.Web", "Tortcu.Web\\Tortcu.Web.csproj", "{C1B0A9D6-0A78-4D4C-A9A2-9F54EA5D9C6B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tortcu.Domain", "Tortcu.Domain\\Tortcu.Domain.csproj", "{6C6C02C3-A995-4381-9D42-67AF55D7B4D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tortcu.Infrastructure", "Tortcu.Infrastructure\\Tortcu.Infrastructure.csproj", "{1F2711CE-0B0A-4C17-AB0E-2A5B1B7D1A97}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1B0A9D6-0A78-4D4C-A9A2-9F54EA5D9C6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1B0A9D6-0A78-4D4C-A9A2-9F54EA5D9C6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1B0A9D6-0A78-4D4C-A9A2-9F54EA5D9C6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1B0A9D6-0A78-4D4C-A9A2-9F54EA5D9C6B}.Release|Any CPU.Build.0 = Release|Any CPU
+
+		{6C6C02C3-A995-4381-9D42-67AF55D7B4D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C6C02C3-A995-4381-9D42-67AF55D7B4D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C6C02C3-A995-4381-9D42-67AF55D7B4D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C6C02C3-A995-4381-9D42-67AF55D7B4D3}.Release|Any CPU.Build.0 = Release|Any CPU
+
+		{1F2711CE-0B0A-4C17-AB0E-2A5B1B7D1A97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F2711CE-0B0A-4C17-AB0E-2A5B1B7D1A97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F2711CE-0B0A-4C17-AB0E-2A5B1B7D1A97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F2711CE-0B0A-4C17-AB0E-2A5B1B7D1A97}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
+

@@ -1,0 +1,139 @@
+@model Tortcu.Web.ViewModels.HomeViewModel
+
+<section class="hero">
+    <div class="container hero-grid">
+        <div class="card pad">
+            <span class="pill highlight">tort • cake • bento • tortcu.az</span>
+            <h1>Premium tortlar, sevgi ilə hazırlanır.</h1>
+            <p>
+                Minimalist dizayn, güclü vizual təqdimat və SEO-ready struktur.
+                Online sifariş yaxın zamanda aktiv olacaq.
+            </p>
+            <div class="hero-actions">
+                <a class="btn primary" href="/products">Məhsullara bax</a>
+                <a class="btn" href="/order">Online sifariş</a>
+            </div>
+        </div>
+
+        <div class="card pad">
+            <div class="placeholder-media">
+                <div>
+                    <strong>Kampaniya banneri</strong>
+                    <div style="margin-top:8px;">
+                        @(Model.Campaign?.Title ?? "Placeholder kampaniya (sonradan kontent əlavə olunacaq)")
+                    </div>
+                    <div style="margin-top:6px; color: var(--muted);">
+                        @(Model.Campaign?.SubTitle ?? "Şəkil olmasa belə layout dağılmır.")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2>Populyar məhsullar</h2>
+                <p>Ən çox baxılanlar (placeholder / DB-dən gələcək).</p>
+            </div>
+            <a class="chip" href="/products">Hamısı</a>
+        </div>
+
+        <div class="grid">
+            @if (Model.PopularProducts.Count == 0)
+            {
+                @for (var i = 0; i < 4; i++)
+                {
+                    <div class="card product">
+                        <div class="thumb"><div class="noimg">Şəkil placeholder</div></div>
+                        <strong>Populyar tort (placeholder)</strong>
+                        <small>Kateqoriya</small>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span class="price">₼ --</span>
+                            <span class="pill">Məlumat üçün zəng edin</span>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                foreach (var p in Model.PopularProducts)
+                {
+                    <a class="card product" href="/products/@p.Slug">
+                        <div class="thumb">
+                            @if (!string.IsNullOrWhiteSpace(p.ThumbnailUrl))
+                            {
+                                <img src="@p.ThumbnailUrl" alt="@p.Name" loading="lazy" />
+                            }
+                            else
+                            {
+                                <div class="noimg">Şəkil yoxdur</div>
+                            }
+                        </div>
+                        <strong>@p.Name</strong>
+                        <small>@(p.CategoryName ?? "Kateqoriya")</small>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span class="price">₼ @p.Price</span>
+                            <span class="pill">Əlaqə ilə sifariş</span>
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2>Kateqoriyalar</h2>
+                <p>Vizual ön planda, səliqəli struktur.</p>
+            </div>
+        </div>
+
+        <div class="grid">
+            @if (Model.Categories.Count == 0)
+            {
+                @for (var i = 0; i < 4; i++)
+                {
+                    <a class="card product" href="/products">
+                        <div class="thumb"><div class="noimg">Kateqoriya</div></div>
+                        <strong>Kateqoriya (placeholder)</strong>
+                        <small>/products/{slug}</small>
+                    </a>
+                }
+            }
+            else
+            {
+                foreach (var c in Model.Categories)
+                {
+                    <a class="card product" href="/products/@c.Slug">
+                        <div class="thumb"><div class="noimg">@c.Name</div></div>
+                        <strong>@c.Name</strong>
+                        <small>/products/@c.Slug</small>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+@section Schema {
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "LocalBusiness",
+          "name": "Tortcu",
+          "url": "@(ViewData["CanonicalUrl"] ?? "")",
+          "telephone": "+994500000000",
+          "sameAs": [
+            "https://bento.az",
+            "https://tortcu.az"
+          ]
+        }
+    </script>
+}
+

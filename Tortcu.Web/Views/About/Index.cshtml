@@ -1,0 +1,40 @@
+<section class="section">
+    <div class="container">
+        <div class="card pad">
+            <h1>Haqqımızda</h1>
+            <p style="margin:0; color: var(--muted);">
+                Brend hekayəsi və istehsal prosesi (kontent sonradan əlavə olunacaq).
+            </p>
+        </div>
+
+        <div style="height:14px;"></div>
+
+        <div class="two-col">
+            <div class="card pad">
+                <p style="margin:0; color: var(--muted); line-height: 1.8;">
+                    @((ViewData["AboutText"] as string) ?? "")
+                </p>
+                <div style="height: 14px;"></div>
+                <div class="pill">SEO-ready • semantic HTML • 1 H1</div>
+            </div>
+            <div class="card pad">
+                @{
+                    var img = ViewData["AboutMainImageUrl"] as string;
+                }
+                @if (!string.IsNullOrWhiteSpace(img))
+                {
+                    <div class="thumb" style="height: 320px;">
+                        <img src="@img" alt="About image" loading="lazy" />
+                    </div>
+                }
+                else
+                {
+                    <div class="placeholder-media" style="min-height: 320px;">
+                        Əsas image placeholder (şəkil olmasa layout dağılmır)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,85 @@
+@model Tortcu.Web.ViewModels.ProductDetailViewModel
+
+<section class="section">
+    <div class="container">
+        <div class="card pad">
+            <h1>@Model.Name</h1>
+            <p style="margin:0; color: var(--muted);">
+                @(Model.CategoryName ?? "Kateqoriya")
+            </p>
+        </div>
+
+        <div style="height:14px;"></div>
+
+        <div class="two-col">
+            <div class="card pad">
+                <div class="grid" style="grid-template-columns: 1fr; gap: 10px;">
+                    <div class="thumb" style="height: 360px;">
+                        @{
+                            var primary = Model.Images.FirstOrDefault(x => x.IsPrimary)?.Url ?? Model.Images.FirstOrDefault()?.Url;
+                        }
+                        @if (!string.IsNullOrWhiteSpace(primary))
+                        {
+                            <img src="@primary" alt="@Model.Name" />
+                        }
+                        else
+                        {
+                            <div class="noimg">Əsas şəkil placeholder</div>
+                        }
+                    </div>
+                    <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        @for (var i = 0; i < 3; i++)
+                        {
+                            var url = Model.Images.Skip(i).FirstOrDefault()?.Url;
+                            <div class="thumb" style="height: 110px;">
+                                @if (!string.IsNullOrWhiteSpace(url))
+                                {
+                                    <img src="@url" alt="@Model.Name image @(i+1)" loading="lazy" />
+                                }
+                                else
+                                {
+                                    <div class="noimg">Şəkil</div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card pad">
+                <div class="pill">tort • cake • bento</div>
+                <div style="height: 10px;"></div>
+                <div class="price" style="font-size: 26px;">₼ @Model.Price</div>
+                <div style="height: 12px;"></div>
+                <p style="margin:0; color: var(--muted); line-height: 1.7;">
+                    @(string.IsNullOrWhiteSpace(Model.Description)
+                        ? "Təsvir sonradan əlavə ediləcək. Məhsul vizual olaraq ön planda qalacaq şəkildə hazırlanıb."
+                        : Model.Description)
+                </p>
+                <div style="height: 16px;"></div>
+                <a class="btn primary" href="/contact">
+                    Sifariş üçün əlaqə
+                </a>
+                <a class="btn" href="/products" style="margin-left:10px;">Geri</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Schema {
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "Product",
+          "name": "@Model.Name",
+          "description": "@(Model.Description ?? "")",
+          "offers": {
+            "@@type": "Offer",
+            "priceCurrency": "AZN",
+            "price": "@Model.Price",
+            "availability": "https://schema.org/PreOrder"
+          }
+        }
+    </script>
+}
+
