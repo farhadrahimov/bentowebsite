@@ -12,38 +12,41 @@
         <div style="height:14px;"></div>
 
         <div class="two-col">
-            <div class="card pad">
-                <div class="grid" style="grid-template-columns: 1fr; gap: 10px;">
-                    <div class="thumb" style="height: 360px;">
-                        @{
-                            var primary = Model.Images.FirstOrDefault(x => x.IsPrimary)?.Url ?? Model.Images.FirstOrDefault()?.Url;
-                        }
-                        @if (!string.IsNullOrWhiteSpace(primary))
-                        {
-                            <img src="@primary" alt="@Model.Name" />
-                        }
-                        else
-                        {
-                            <div class="noimg">Əsas şəkil placeholder</div>
-                        }
+            <div class="card detail-media-card">
+                @{
+                    var primaryImg = Model.Images.FirstOrDefault(x => x.IsPrimary)?.Url
+                                  ?? Model.Images.FirstOrDefault()?.Url;
+                    var extraImgs = Model.Images
+                        .Where(x => x.Url != primaryImg && !string.IsNullOrWhiteSpace(x.Url))
+                        .Take(4)
+                        .ToList();
+                }
+                @if (!string.IsNullOrWhiteSpace(primaryImg))
+                {
+                    <div class="detail-main-img" data-lightbox-src="@primaryImg" style="cursor:zoom-in;" title="Böyütmək üçün klikləyin">
+                        <img src="@primaryImg" alt="@Model.Name" loading="eager" data-main />
                     </div>
-                    <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                        @for (var i = 0; i < 3; i++)
+                }
+                else
+                {
+                    <div class="detail-main-img">
+                        <div class="noimg" style="height:100%; display:grid; place-items:center; font-size:56px; font-family:'Playfair Display',serif; color:var(--brand);">
+                            @(Model.Name.Length > 0 ? Model.Name[0].ToString() : "T")
+                        </div>
+                    </div>
+                }
+                @if (extraImgs.Count > 0)
+                {
+                    <div class="detail-extra-imgs">
+                        @foreach (var img in extraImgs)
                         {
-                            var url = Model.Images.Skip(i).FirstOrDefault()?.Url;
-                            <div class="thumb" style="height: 110px;">
-                                @if (!string.IsNullOrWhiteSpace(url))
-                                {
-                                    <img src="@url" alt="@Model.Name image @(i+1)" loading="lazy" />
-                                }
-                                else
-                                {
-                                    <div class="noimg">Şəkil</div>
-                                }
+                            <div class="detail-extra-thumb" data-lightbox-src="@img.Url"
+                                 onclick="var m=document.querySelector('img[data-main]'); if(m) m.src='@img.Url'">
+                                <img src="@img.Url" alt="@Model.Name" loading="lazy" />
                             </div>
                         }
                     </div>
-                </div>
+                }
             </div>
 
             <div class="card pad">

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>@(ViewData["Title"] ?? "Cp") — Tortcu</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .cp-nav { background: #1a1a1a; color: #e0e0e0; padding: 12px 0; }
+        .cp-nav a { color: inherit; margin: 0 12px; }
+        .cp-body { padding: 24px 0; }
+    </style>
+</head>
+<body>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <nav class="cp-nav">
+            <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; gap: 4px; align-items:center;">
+                    <a href="/cp">Cp</a>
+                    <a href="/cp/categories">Kateqoriyalar</a>
+                    <a href="/cp/products">Məhsullar</a>
+                    <a href="/cp/campaigns">Kampaniyalar</a>
+                    <a href="/cp/about">Haqqımızda</a>
+                </div>
+                <form asp-area="Cp" asp-controller="Auth" asp-action="Logout" method="post" style="margin:0;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn ghost" style="color:inherit;">Çıxış</button>
+                </form>
+            </div>
+        </nav>
+    }
+    <main class="container cp-body">
+        @RenderBody()
+    </main>
+</body>
+</html>

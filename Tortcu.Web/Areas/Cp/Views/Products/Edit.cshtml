@@ -1,0 +1,84 @@
+@model Tortcu.Domain.Product
+@{
+    ViewData["Title"] = "Məhsul redaktəsi";
+    var error = ViewData["Error"] as string;
+    var categories = ViewData["Categories"] as List<Tortcu.Domain.Category> ?? new();
+    var primaryImg = Model.Images?.FirstOrDefault(i => i.IsPrimary);
+}
+<div class="card pad is-visible" style="max-width: 560px;">
+    <h1>Məhsul redaktəsi</h1>
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <p style="color: var(--accent); margin: 8px 0;">@error</p>
+    }
+    <form method="post" asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data" style="margin-top: 16px;">
+        @Html.AntiForgeryToken()
+        <div style="margin-bottom: 12px;">
+            <label for="categoryId" style="display:block; margin-bottom: 4px;">Kateqoriya</label>
+            <select id="categoryId" name="categoryId" required style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);">
+                @foreach (var cat in categories)
+                {
+                    @if (cat.Id == Model.CategoryId)
+                    {
+                        <option value="@cat.Id" selected>@cat.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@cat.Id">@cat.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="name" style="display:block; margin-bottom: 4px;">Ad</label>
+            <input type="text" id="name" name="name" value="@Model.Name" required style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="slug" style="display:block; margin-bottom: 4px;">Slug</label>
+            <input type="text" id="slug" name="slug" value="@Model.Slug" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="description" style="display:block; margin-bottom: 4px;">Təsvir</label>
+            <textarea id="description" name="description" rows="4" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line); resize:vertical;">@Model.Description</textarea>
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="price" style="display:block; margin-bottom: 4px;">Qiymət (₼)</label>
+            <input type="number" id="price" name="price" step="0.01" min="0" value="@Model.Price.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="imageFile" style="display:block; margin-bottom: 4px;">Yeni şəkil (lokal fayl)</label>
+            <input type="file" id="imageFile" name="imageFile" accept=".jpg,.jpeg,.png,.gif,.webp" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+            <small style="color: var(--muted);">JPG, PNG, GIF, WebP — max 5 MB. Boş saxlasanız mövcud şəkil qalır.</small>
+        </div>
+        @if (primaryImg != null)
+        {
+            <div style="margin-bottom: 12px;">
+                <span style="color: var(--muted);">Mövcud şəkil:</span>
+                <a href="@primaryImg.ImageUrl" target="_blank" rel="noopener">@primaryImg.ImageUrl</a>
+                <img src="@primaryImg.ImageUrl" alt="" style="max-width: 120px; max-height: 80px; display: block; margin-top: 6px; border-radius: 8px; object-fit: cover;" />
+            </div>
+        }
+        <div style="margin-bottom: 12px;">
+            <label for="imageUrl" style="display:block; margin-bottom: 4px;">Və ya URL ilə dəyişdir</label>
+            <input type="text" id="imageUrl" name="imageUrl" value="@(primaryImg?.ImageUrl ?? "")" placeholder="https://... və ya /uploads/..." style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 16px; display:flex; gap: 20px; flex-wrap: wrap;">
+            <label style="display:flex; align-items:center; gap: 8px;">
+                <input type="checkbox" name="isActive" value="true" @(Model.IsActive ? "checked" : "") />
+                Aktiv
+            </label>
+            <label style="display:flex; align-items:center; gap: 8px;">
+                <input type="checkbox" name="isPopular" value="true" @(Model.IsPopular ? "checked" : "") />
+                Populyar
+            </label>
+            <label style="display:flex; align-items:center; gap: 8px;">
+                <input type="checkbox" name="showInGallery" value="true" @(primaryImg?.ShowInGallery == true ? "checked" : "") />
+                Qalereyada göstər
+            </label>
+        </div>
+        <div style="display:flex; gap: 10px;">
+            <button type="submit" class="btn primary">Yadda saxla</button>
+            <a asp-action="Index" class="btn ghost">Geri</a>
+        </div>
+    </form>
+</div>

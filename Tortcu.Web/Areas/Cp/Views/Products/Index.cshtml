@@ -1,0 +1,74 @@
+@model IEnumerable<Tortcu.Domain.Product>
+@{
+    ViewData["Title"] = "Məhsullar";
+    var error = TempData["Error"] as string;
+    var success = TempData["Success"] as string;
+    var categories = ViewData["Categories"] as List<Tortcu.Domain.Category> ?? new();
+    var selectedId = ViewData["SelectedCategoryId"] as int?;
+}
+<div class="card pad is-visible">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <h1 style="margin:0;">Məhsullar</h1>
+        <a asp-action="Create" class="btn primary">Yeni məhsul</a>
+    </div>
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <p style="color: var(--accent); margin: 12px 0 0;">@error</p>
+    }
+    @if (!string.IsNullOrEmpty(success))
+    {
+        <p style="color: #2e7d32; margin: 12px 0 0;">@success</p>
+    }
+    @if (categories.Count > 0)
+    {
+        <div style="margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap;">
+            <a asp-action="Index" asp-route-categoryId="" class="chip @(selectedId == null ? "active" : "")">Hamısı</a>
+            @foreach (var cat in categories)
+            {
+                <a asp-action="Index" asp-route-categoryId="@cat.Id" class="chip @(selectedId == cat.Id ? "active" : "")">@cat.Name</a>
+            }
+        </div>
+    }
+    @if (!Model.Any())
+    {
+        <p style="color: var(--muted); margin-top: 18px;">Məhsul tapılmadı. <a asp-action="Create">Birinci məhsul əlavə edin</a>.</p>
+    }
+    else
+    {
+        <table style="width:100%; margin-top: 18px; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 1px solid var(--line); text-align:left;">
+                    <th style="padding: 10px 8px;">Ad</th>
+                    <th style="padding: 10px 8px;">Kateqoriya</th>
+                    <th style="padding: 10px 8px;">Qiymət</th>
+                    <th style="padding: 10px 8px;">Status</th>
+                    <th style="padding: 10px 8px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr style="border-bottom: 1px solid var(--line);">
+                        <td style="padding: 10px 8px;">
+                            @p.Name
+                            @if (p.IsPopular)
+                            {
+                                <span class="pill highlight" style="margin-left:6px; font-size:11px;">Populyar</span>
+                            }
+                        </td>
+                        <td style="padding: 10px 8px; color: var(--muted);">@(p.Category?.Name ?? "—")</td>
+                        <td style="padding: 10px 8px;">@p.Price.ToString("N2") ₼</td>
+                        <td style="padding: 10px 8px;">@(p.IsActive ? "Aktiv" : "Passiv")</td>
+                        <td style="padding: 10px 8px;">
+                            <a asp-action="Edit" asp-route-id="@p.Id" class="btn">Redaktə</a>
+                            <form asp-action="Delete" asp-route-id="@p.Id" method="post" style="display:inline;" onsubmit="return confirm('Məhsulu silmək istədiyinizə əminsiniz?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn ghost" style="color: var(--accent);">Sil</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

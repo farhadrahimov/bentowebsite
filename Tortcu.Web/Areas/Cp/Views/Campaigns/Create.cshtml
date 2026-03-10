@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Yeni kampaniya";
+    var error = ViewData["Error"] as string;
+    var titleMax = 200;
+    var subTitleMax = 400;
+}
+<div class="card pad is-visible" style="max-width: 560px;">
+    <h1>Yeni kampaniya</h1>
+    @if (!string.IsNullOrEmpty(error)) { <p style="color: var(--accent); margin: 8px 0;">@error</p> }
+    <form method="post" asp-action="Create" enctype="multipart/form-data" style="margin-top: 16px;">
+        @Html.AntiForgeryToken()
+        <div style="margin-bottom: 12px;">
+            <label for="title">Başlıq <small style="color: var(--muted);">(max @titleMax simvol)</small></label>
+            <input type="text" id="title" name="title" required maxlength="@titleMax" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="subTitle">Alt başlıq <small style="color: var(--muted);">(max @subTitleMax simvol)</small></label>
+            <input type="text" id="subTitle" name="subTitle" maxlength="@subTitleMax" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="imageFile">Şəkil (1 ədəd, max 5 MB)</label>
+            <input type="file" id="imageFile" name="imageFile" accept=".jpg,.jpeg,.png,.gif,.webp" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="imageUrl">Və ya şəkil URL</label>
+            <input type="text" id="imageUrl" name="imageUrl" placeholder="/uploads/..." style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px; display:flex; gap: 12px; flex-wrap: wrap;">
+            <div>
+                <label for="startDateUtc">Başlanğıc (UTC)</label>
+                <input type="datetime-local" id="startDateUtc" name="startDateUtc" style="padding: 8px; border-radius: 8px; border: 1px solid var(--line);" />
+            </div>
+            <div>
+                <label for="endDateUtc">Bitmə (UTC)</label>
+                <input type="datetime-local" id="endDateUtc" name="endDateUtc" style="padding: 8px; border-radius: 8px; border: 1px solid var(--line);" />
+            </div>
+        </div>
+        <div style="margin-bottom: 16px;">
+            <label><input type="checkbox" name="isActive" value="true" /> Aktiv (yalnız 1 kampaniya aktiv ola bilər)</label>
+        </div>
+        <div style="display:flex; gap: 10px;">
+            <button type="submit" class="btn primary">Yarat</button>
+            <a asp-action="Index" class="btn ghost">Geri</a>
+        </div>
+    </form>
+</div>

@@ -13,6 +13,7 @@ public sealed class AppDbContext : DbContext
     public DbSet<Campaign> Campaigns => Set<Campaign>();
     public DbSet<AboutContent> AboutContents => Set<AboutContent>();
     public DbSet<SeoMeta> SeoMetas => Set<SeoMeta>();
+    public DbSet<AdminUser> AdminUsers => Set<AdminUser>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -49,6 +50,7 @@ public sealed class AppDbContext : DbContext
             b.HasKey(x => x.Id);
             b.Property(x => x.ImageUrl).HasMaxLength(600).IsRequired();
             b.Property(x => x.IsPrimary).HasDefaultValue(false);
+            b.Property(x => x.ShowInGallery).HasDefaultValue(false);
             b.HasOne(x => x.Product)
                 .WithMany(x => x.Images)
                 .HasForeignKey(x => x.ProductId);
@@ -68,7 +70,7 @@ public sealed class AppDbContext : DbContext
         {
             b.ToTable("AboutContent");
             b.HasKey(x => x.Id);
-            b.Property(x => x.Content).HasMaxLength(12000).IsRequired();
+            b.Property(x => x.Content).HasColumnType("nvarchar(max)").IsRequired();
             b.Property(x => x.MainImageUrl).HasMaxLength(600);
         });
 
@@ -84,6 +86,16 @@ public sealed class AppDbContext : DbContext
             b.Property(x => x.OgDescription).HasMaxLength(600);
             b.Property(x => x.OgImageUrl).HasMaxLength(600);
             b.HasIndex(x => new { x.PageType, x.EntityId }).IsUnique();
+        });
+
+        modelBuilder.Entity<AdminUser>(b =>
+        {
+            b.ToTable("AdminUser");
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Username).HasMaxLength(100).IsRequired();
+            b.Property(x => x.PasswordHash).HasMaxLength(256).IsRequired();
+            b.Property(x => x.CreatedAtUtc).HasColumnType("datetime2").HasDefaultValueSql("sysutcdatetime()");
+            b.HasIndex(x => x.Username).IsUnique();
         });
 
         base.OnModelCreating(modelBuilder);

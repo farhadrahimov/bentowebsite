@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Daxil ol";
+    var error = ViewData["Error"] as string;
+}
+<div class="card pad is-visible" style="max-width: 380px; margin: 0 auto;">
+    <h1>Daxil ol</h1>
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <p style="color: var(--accent); margin: 8px 0;">@error</p>
+    }
+    <form method="post" asp-area="Cp" asp-controller="Auth" asp-action="Index">
+        @Html.AntiForgeryToken()
+        <div style="margin-bottom: 12px;">
+            <label for="username" style="display:block; margin-bottom: 4px;">İstifadəçi adı</label>
+            <input type="text" id="username" name="username" required autocomplete="username"
+                   style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 16px;">
+            <label for="password" style="display:block; margin-bottom: 4px;">Şifrə</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password"
+                   style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <button type="submit" class="btn primary" style="width:100%;">Daxil ol</button>
+    </form>
+</div>

@@ -28,6 +28,10 @@ appsettings.Development.json
 ## Logs
 *.log
 
+## User uploads (wwwroot/uploads)
+Tortcu.Web/wwwroot/uploads/*
+!Tortcu.Web/wwwroot/uploads/.gitkeep
+
 ## IDE
 .idea/
 .vscode/

@@ -37,6 +37,10 @@ Minimalist, premium görünüşlü tort satış vebsaytı (PRD v1.0 əsasında).
 }
 ```
 
+### Docs
+
+- **Admin Panel Integration:** `docs/ADMIN-INTEGRATION.md` — plan, schema analizi, phased rollout.
+
 ### Notes
 
 - Logo üçün `wwwroot/images/logo.svg` placeholder var. İstəsəniz `wwwroot/images/logo.png` əlavə edib layout-da `img` path-ni dəyişə bilərsiniz.

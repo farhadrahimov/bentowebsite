@@ -1,0 +1,13 @@
+@{
+    ViewData["Title"] = "Panel";
+}
+<div class="card pad is-visible">
+    <h1>Panel</h1>
+    <p style="color: var(--muted); margin: 0;">Salam, @User.Identity?.Name</p>
+    <div style="margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="/cp/categories" class="pill">Kateqoriyalar</a>
+        <a href="/cp/products" class="pill">Məhsullar</a>
+        <a href="/cp/campaigns" class="pill">Kampaniyalar</a>
+        <a href="/cp/about" class="pill">Haqqımızda</a>
+    </div>
+</div>

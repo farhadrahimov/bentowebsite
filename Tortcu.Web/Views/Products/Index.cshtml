@@ -4,9 +4,6 @@
     <div class="container">
         <div class="card pad">
             <h1>@(Model.CategoryName ?? "Məhsullar")</h1>
-            <p style="margin: 0; color: var(--muted);">
-                Filter panel (sadə) + grid layout.
-            </p>
         </div>
 
         <div style="height: 14px;"></div>
@@ -26,17 +23,10 @@
         <div class="grid">
             @if (Model.Products.Count == 0)
             {
-                @for (var i = 0; i < 8; i++)
-                {
-                    <div class="card product">
-                        <div class="thumb"><div class="noimg">Şəkil placeholder</div></div>
-                        <strong>Məhsul (placeholder)</strong>
-                        <small>₼ --</small>
-                        <div style="margin-top:auto;">
-                            <span class="pill">Əlaqə ilə sifariş</span>
-                        </div>
-                    </div>
-                }
+                <div class="grid-empty">
+                    <p>Bu kateqoriyada hələ məhsul yoxdur.</p>
+                    <a href="/products" class="btn">Bütün məhsullara bax</a>
+                </div>
             }
             else
             {
@@ -50,14 +40,17 @@
                             }
                             else
                             {
-                                <div class="noimg">Şəkil yoxdur</div>
+                                <div class="noimg"><span>@(p.Name.Length > 0 ? p.Name[0].ToString() : "T")</span></div>
                             }
                         </div>
                         <strong>@p.Name</strong>
-                        <small>@(p.CategoryName ?? "Kateqoriya")</small>
+                        @if (!string.IsNullOrEmpty(p.CategoryName))
+                        {
+                            <small>@p.CategoryName</small>
+                        }
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
-                            <span class="price">₼ @p.Price</span>
-                            <span class="pill">Əlaqə ilə sifariş</span>
+                            <span class="price">@p.Price.ToString("N2") ₼</span>
+                            <span class="chip" style="font-size: 11px; padding: 4px 10px;">Sifariş et</span>
                         </div>
                     </a>
                 }

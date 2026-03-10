@@ -9,5 +9,6 @@ public sealed class ProductImage
     public string ImageUrl { get; set; } = "";
     public bool IsPrimary { get; set; } = false;
     public int DisplayOrder { get; set; } = 0;
+    public bool ShowInGallery { get; set; } = false;
 }
 

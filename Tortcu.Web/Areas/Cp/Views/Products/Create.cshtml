@@ -1,0 +1,67 @@
+@{
+    ViewData["Title"] = "Yeni məhsul";
+    var error = ViewData["Error"] as string;
+    var categories = ViewData["Categories"] as List<Tortcu.Domain.Category> ?? new List<Tortcu.Domain.Category>();
+}
+<div class="card pad is-visible" style="max-width: 560px;">
+    <h1>Yeni məhsul</h1>
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <p style="color: var(--accent); margin: 8px 0;">@error</p>
+    }
+    <form method="post" asp-action="Create" enctype="multipart/form-data" style="margin-top: 16px;">
+        @Html.AntiForgeryToken()
+        <div style="margin-bottom: 12px;">
+            <label for="categoryId" style="display:block; margin-bottom: 4px;">Kateqoriya</label>
+            <select id="categoryId" name="categoryId" required style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);">
+                @foreach (var cat in categories)
+                {
+                    <option value="@cat.Id">@cat.Name</option>
+                }
+            </select>
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="name" style="display:block; margin-bottom: 4px;">Ad</label>
+            <input type="text" id="name" name="name" required style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="slug" style="display:block; margin-bottom: 4px;">Slug (boşsa avtomatik)</label>
+            <input type="text" id="slug" name="slug" placeholder="url-ucun-slug" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="description" style="display:block; margin-bottom: 4px;">Təsvir</label>
+            <textarea id="description" name="description" rows="4" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line); resize:vertical;"></textarea>
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="price" style="display:block; margin-bottom: 4px;">Qiymət (₼)</label>
+            <input type="number" id="price" name="price" step="0.01" min="0" value="0" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="imageFile" style="display:block; margin-bottom: 4px;">Şəkil (lokal fayl)</label>
+            <input type="file" id="imageFile" name="imageFile" accept=".jpg,.jpeg,.png,.gif,.webp" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+            <small style="color: var(--muted);">JPG, PNG, GIF, WebP — max 5 MB</small>
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="imageUrl" style="display:block; margin-bottom: 4px;">Və ya şəkil URL (əlavə)</label>
+            <input type="text" id="imageUrl" name="imageUrl" placeholder="https://... və ya /uploads/products/..." style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 16px; display:flex; gap: 20px; flex-wrap: wrap;">
+            <label style="display:flex; align-items:center; gap: 8px;">
+                <input type="checkbox" name="isActive" value="true" checked />
+                Aktiv
+            </label>
+            <label style="display:flex; align-items:center; gap: 8px;">
+                <input type="checkbox" name="isPopular" value="true" />
+                Populyar
+            </label>
+            <label style="display:flex; align-items:center; gap: 8px;">
+                <input type="checkbox" name="showInGallery" value="true" />
+                Qalereyada göstər
+            </label>
+        </div>
+        <div style="display:flex; gap: 10px;">
+            <button type="submit" class="btn primary">Yarat</button>
+            <a asp-action="Index" class="btn ghost">Geri</a>
+        </div>
+    </form>
+</div>

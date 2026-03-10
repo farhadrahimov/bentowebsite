@@ -108,7 +108,7 @@ BEGIN
     CREATE TABLE dbo.AboutContent
     (
         Id           INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_AboutContent PRIMARY KEY,
-        Content      NVARCHAR(12000) NOT NULL,
+        Content      NVARCHAR(MAX) NOT NULL,
         MainImageUrl NVARCHAR(600) NULL
     );
 END

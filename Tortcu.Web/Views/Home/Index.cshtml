@@ -1,42 +1,74 @@
 @model Tortcu.Web.ViewModels.HomeViewModel
 
 <section class="hero">
-    <div class="container hero-grid">
-        <div class="card pad">
-            <span class="pill highlight">tort • cake • bento • tortcu.az</span>
-            <h1>Premium tortlar, sevgi ilə hazırlanır.</h1>
-            <p>
-                Minimalist dizayn, güclü vizual təqdimat və SEO-ready struktur.
-                Online sifariş yaxın zamanda aktiv olacaq.
-            </p>
-            <div class="hero-actions">
-                <a class="btn primary" href="/products">Məhsullara bax</a>
-                <a class="btn" href="/order">Online sifariş</a>
-            </div>
-        </div>
-
-        <div class="card pad">
-            <div class="placeholder-media">
-                <div>
-                    <strong>Kampaniya banneri</strong>
-                    <div style="margin-top:8px;">
-                        @(Model.Campaign?.Title ?? "Placeholder kampaniya (sonradan kontent əlavə olunacaq)")
-                    </div>
-                    <div style="margin-top:6px; color: var(--muted);">
-                        @(Model.Campaign?.SubTitle ?? "Şəkil olmasa belə layout dağılmır.")
-                    </div>
+    <div class="container">
+        <div class="hero-band card">
+            <div class="hero-band__text">
+                <h1>Premium tortlar,<br>sevgi ilə hazırlanır.</h1>
+                <p>Bakıda ev şəraitində hazırlanan tort və şirniyyatlar. Hər sifariş fərdi hazırlanır.</p>
+                <div class="hero-actions">
+                    <a class="btn primary" href="/products">Məhsullara bax</a>
+                    <a class="btn" href="/order">Online sifariş</a>
                 </div>
+            </div>
+            <div class="hero-band__media">
+                @if (!string.IsNullOrEmpty(Model.Campaign?.ImageUrl))
+                {
+                    <div class="hero-campaign">
+                        <img src="@Model.Campaign.ImageUrl" alt="@(Model.Campaign.Title)" loading="eager" />
+                        <div class="hero-campaign__label">
+                            <strong>@Model.Campaign.Title</strong>
+                            @if (!string.IsNullOrEmpty(Model.Campaign.SubTitle))
+                            {
+                                <span>@Model.Campaign.SubTitle</span>
+                            }
+                        </div>
+                    </div>
+                }
+                else if (Model.Campaign != null)
+                {
+                    <div class="hero-campaign hero-campaign--text">
+                        <div class="hero-campaign__label">
+                            <strong>@Model.Campaign.Title</strong>
+                            @if (!string.IsNullOrEmpty(Model.Campaign.SubTitle))
+                            {
+                                <span>@Model.Campaign.SubTitle</span>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="hero-campaign hero-campaign--empty">
+                        <div style="font-size: 48px; line-height: 1;">🎂</div>
+                        <div style="color: var(--muted); font-size: 14px; margin-top: 8px;">Yeni tortlarımız hazırlanır</div>
+                    </div>
+                }
             </div>
         </div>
     </div>
 </section>
+
+@if (Model.Categories.Count > 0)
+{
+    <section class="section section--cats">
+        <div class="container">
+            <div class="cats-row">
+                @foreach (var c in Model.Categories)
+                {
+                    <a class="cat-pill" href="/products/@c.Slug">@c.Name</a>
+                }
+                <a class="cat-pill cat-pill--all" href="/products">Bütün məhsullar →</a>
+            </div>
+        </div>
+    </section>
+}
 
 <section class="section">
     <div class="container">
         <div class="section-head">
             <div>
                 <h2>Populyar məhsullar</h2>
-                <p>Ən çox baxılanlar (placeholder / DB-dən gələcək).</p>
             </div>
             <a class="chip" href="/products">Hamısı</a>
         </div>
@@ -44,18 +76,10 @@
         <div class="grid">
             @if (Model.PopularProducts.Count == 0)
             {
-                @for (var i = 0; i < 4; i++)
-                {
-                    <div class="card product">
-                        <div class="thumb"><div class="noimg">Şəkil placeholder</div></div>
-                        <strong>Populyar tort (placeholder)</strong>
-                        <small>Kateqoriya</small>
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span class="price">₼ --</span>
-                            <span class="pill">Məlumat üçün zəng edin</span>
-                        </div>
-                    </div>
-                }
+                <div class="grid-empty">
+                    <p>Hələ populyar məhsul əlavə olunmayıb. Admin paneldə məhsullara "Populyar" işarəsi qoyun.</p>
+                    <a href="/products" class="btn">Bütün məhsullara bax</a>
+                </div>
             }
             else
             {
@@ -69,51 +93,17 @@
                             }
                             else
                             {
-                                <div class="noimg">Şəkil yoxdur</div>
+                                <div class="noimg">
+                                    <span>@p.Name[0]</span>
+                                </div>
                             }
                         </div>
                         <strong>@p.Name</strong>
-                        <small>@(p.CategoryName ?? "Kateqoriya")</small>
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span class="price">₼ @p.Price</span>
-                            <span class="pill">Əlaqə ilə sifariş</span>
+                        <small>@(p.CategoryName ?? "")</small>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: auto;">
+                            <span class="price">@p.Price.ToString("N2") ₼</span>
+                            <span class="chip" style="font-size: 11px; padding: 4px 10px;">Sifariş et</span>
                         </div>
-                    </a>
-                }
-            }
-        </div>
-    </div>
-</section>
-
-<section class="section">
-    <div class="container">
-        <div class="section-head">
-            <div>
-                <h2>Kateqoriyalar</h2>
-                <p>Vizual ön planda, səliqəli struktur.</p>
-            </div>
-        </div>
-
-        <div class="grid">
-            @if (Model.Categories.Count == 0)
-            {
-                @for (var i = 0; i < 4; i++)
-                {
-                    <a class="card product" href="/products">
-                        <div class="thumb"><div class="noimg">Kateqoriya</div></div>
-                        <strong>Kateqoriya (placeholder)</strong>
-                        <small>/products/{slug}</small>
-                    </a>
-                }
-            }
-            else
-            {
-                foreach (var c in Model.Categories)
-                {
-                    <a class="card product" href="/products/@c.Slug">
-                        <div class="thumb"><div class="noimg">@c.Name</div></div>
-                        <strong>@c.Name</strong>
-                        <small>/products/@c.Slug</small>
                     </a>
                 }
             }

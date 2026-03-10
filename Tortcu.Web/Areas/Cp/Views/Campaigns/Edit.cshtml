@@ -1,0 +1,54 @@
+@model Tortcu.Domain.Campaign
+@{
+    ViewData["Title"] = "Kampaniya redaktəsi";
+    var error = ViewData["Error"] as string;
+    var titleMax = 200;
+    var subTitleMax = 400;
+}
+<div class="card pad is-visible" style="max-width: 560px;">
+    <h1>Kampaniya redaktəsi</h1>
+    @if (!string.IsNullOrEmpty(error)) { <p style="color: var(--accent); margin: 8px 0;">@error</p> }
+    <form method="post" asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data" style="margin-top: 16px;">
+        @Html.AntiForgeryToken()
+        <div style="margin-bottom: 12px;">
+            <label for="title">Başlıq <small style="color: var(--muted);">(max @titleMax simvol)</small></label>
+            <input type="text" id="title" name="title" value="@Model.Title" required maxlength="@titleMax" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="subTitle">Alt başlıq <small style="color: var(--muted);">(max @subTitleMax simvol)</small></label>
+            <input type="text" id="subTitle" name="subTitle" value="@Model.SubTitle" maxlength="@subTitleMax" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="imageFile">Yeni şəkil (boş saxlasanız mövcud qalır)</label>
+            <input type="file" id="imageFile" name="imageFile" accept=".jpg,.jpeg,.png,.gif,.webp" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div style="margin-bottom: 12px;">
+                <span style="color: var(--muted);">Mövcud şəkil:</span>
+                <img src="@Model.ImageUrl" alt="" style="max-width: 120px; max-height: 80px; display: block; margin-top: 6px; border-radius: 8px; object-fit: cover;" />
+            </div>
+        }
+        <div style="margin-bottom: 12px;">
+            <label for="imageUrl">Və ya URL ilə dəyişdir</label>
+            <input type="text" id="imageUrl" name="imageUrl" value="@Model.ImageUrl" placeholder="/uploads/..." style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="margin-bottom: 12px; display:flex; gap: 12px; flex-wrap: wrap;">
+            <div>
+                <label for="startDateUtc">Başlanğıc (UTC)</label>
+                <input type="datetime-local" id="startDateUtc" name="startDateUtc" value="@(Model.StartDateUtc?.ToString("yyyy-MM-ddTHH:mm"))" style="padding: 8px; border-radius: 8px; border: 1px solid var(--line);" />
+            </div>
+            <div>
+                <label for="endDateUtc">Bitmə (UTC)</label>
+                <input type="datetime-local" id="endDateUtc" name="endDateUtc" value="@(Model.EndDateUtc?.ToString("yyyy-MM-ddTHH:mm"))" style="padding: 8px; border-radius: 8px; border: 1px solid var(--line);" />
+            </div>
+        </div>
+        <div style="margin-bottom: 16px;">
+            <label><input type="checkbox" name="isActive" value="true" @(Model.IsActive ? "checked" : "") /> Aktiv (yalnız 1 kampaniya aktiv ola bilər)</label>
+        </div>
+        <div style="display:flex; gap: 10px;">
+            <button type="submit" class="btn primary">Yadda saxla</button>
+            <a asp-action="Index" class="btn ghost">Geri</a>
+        </div>
+    </form>
+</div>

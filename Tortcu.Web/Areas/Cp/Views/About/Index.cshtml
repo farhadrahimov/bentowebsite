@@ -1,0 +1,38 @@
+@model Tortcu.Domain.AboutContent
+@{
+    ViewData["Title"] = "Haqqımızda redaktəsi";
+    var error = ViewData["Error"] as string;
+    var success = TempData["Success"] as string;
+    var maxLen = ViewData["ContentMaxLen"] as int? ?? 15000;
+}
+<div class="card pad is-visible" style="max-width: 680px;">
+    <h1>Haqqımızda səhifəsi</h1>
+    @if (!string.IsNullOrEmpty(error)) { <p style="color: var(--accent); margin: 8px 0;">@error</p> }
+    @if (!string.IsNullOrEmpty(success)) { <p style="color: #2e7d32; margin: 8px 0;">@success</p> }
+    <form method="post" enctype="multipart/form-data" style="margin-top: 16px;">
+        @Html.AntiForgeryToken()
+        <div style="margin-bottom: 12px;">
+            <label for="content">Mətn <small style="color: var(--muted);">(max @maxLen.ToString("N0") simvol)</small></label>
+            <textarea id="content" name="content" rows="12" maxlength="@maxLen" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line); resize: vertical;">@Model.Content</textarea>
+        </div>
+        <div style="margin-bottom: 12px;">
+            <label for="mainImageFile">Əsas şəkil (1 ədəd, max 5 MB)</label>
+            <input type="file" id="mainImageFile" name="mainImageFile" accept=".jpg,.jpeg,.png,.gif,.webp" style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        @if (!string.IsNullOrEmpty(Model.MainImageUrl))
+        {
+            <div style="margin-bottom: 12px;">
+                <span style="color: var(--muted);">Mövcud şəkil:</span>
+                <img src="@Model.MainImageUrl" alt="" style="max-width: 200px; max-height: 120px; display: block; margin-top: 6px; border-radius: 8px; object-fit: cover;" />
+            </div>
+        }
+        <div style="margin-bottom: 12px;">
+            <label for="mainImageUrl">Və ya URL ilə dəyişdir</label>
+            <input type="text" id="mainImageUrl" name="mainImageUrl" value="@Model.MainImageUrl" placeholder="/uploads/..." style="width:100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);" />
+        </div>
+        <div style="display:flex; gap: 10px;">
+            <button type="submit" class="btn primary">Yadda saxla</button>
+            <a href="/about" target="_blank" class="btn ghost">Səhifəyə bax</a>
+        </div>
+    </form>
+</div>

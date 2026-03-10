@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Tortcu.Infrastructure.Data;
 using Tortcu.Infrastructure.Services;
 
 namespace Tortcu.Web.Controllers;
@@ -6,8 +8,13 @@ namespace Tortcu.Web.Controllers;
 public sealed class GalleryController : Controller
 {
     private readonly ISeoMetaService _seo;
+    private readonly AppDbContext _db;
 
-    public GalleryController(ISeoMetaService seo) => _seo = seo;
+    public GalleryController(ISeoMetaService seo, AppDbContext db)
+    {
+        _seo = seo;
+        _db = db;
+    }
 
     [HttpGet("/gallery")]
     public async Task<IActionResult> Index(CancellationToken ct)
@@ -16,8 +23,14 @@ public sealed class GalleryController : Controller
         var meta = await _seo.GetForPageAsync("Gallery", null, canonical, ct);
         this.ApplyMeta(meta);
 
-        // Placeholder list (real images later)
-        var images = Enumerable.Range(1, 18).Select(i => $"/images/gallery/placeholder-{i:00}.webp").ToList();
+        var images = await _db.ProductImages
+            .AsNoTracking()
+            .Where(x => x.ShowInGallery)
+            .OrderBy(x => x.DisplayOrder)
+            .ThenBy(x => x.Id)
+            .Select(x => x.ImageUrl)
+            .ToListAsync(ct);
+
         return View(images);
     }
 }
