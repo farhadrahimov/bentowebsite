@@ -12,6 +12,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FQK2JB0JG4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FQK2JB0JG4');
+    </script>
+
+    <meta name="google-site-verification" content="0hO-fU9KW8iAorekoA8kWH4OReZoZvcPayFFAvapDlk" />
+
     <title>@title</title>
     @if (!string.IsNullOrWhiteSpace(desc))
     {
@@ -28,6 +40,10 @@
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content="@ogTitle" />
+    @if (!string.IsNullOrWhiteSpace(canonical))
+    {
+        <meta property="og:url" content="@canonical" />
+    }
     @if (!string.IsNullOrWhiteSpace(ogDesc))
     {
         <meta property="og:description" content="@ogDesc" />
@@ -36,6 +52,15 @@
     {
         <meta property="og:image" content="@ogImg" />
     }
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@ogTitle" />
+    @if (!string.IsNullOrWhiteSpace(ogDesc))
+    {
+        <meta name="twitter:description" content="@ogDesc" />
+    }
+
+    <link rel="icon" href="~/images/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="~/images/tortcu-logo.png" type="image/png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -57,14 +82,21 @@
                 </div>
             </a>
 
-            <nav class="nav-links" aria-label="Primary navigation">
+            <nav class="nav-links" id="primary-nav" aria-label="Primary navigation">
                 <a href="/products">Məhsullar</a>
                 <a href="/gallery">Qalereya</a>
                 <a href="/about">Haqqımızda</a>
                 <a href="/contact">Əlaqə</a>
                 <a href="/order" class="pill">Online sifariş</a>
-                <button type="button" class="btn ghost" data-theme-toggle aria-label="Qaranlıq / İşıqlı rejim"></button>
             </nav>
+
+            <div class="nav-actions">
+                <button type="button" class="btn ghost" data-theme-toggle aria-label="Qaranlıq / İşıqlı rejim"></button>
+                <button type="button" class="nav-toggle" data-nav-toggle
+                        aria-label="Menyunu aç" aria-expanded="false" aria-controls="primary-nav">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </div>
     </header>
 

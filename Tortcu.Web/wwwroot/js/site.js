@@ -52,6 +52,34 @@
     observer.observe(card);
   });
 
+  // Mobile nav toggle
+  const navToggle = document.querySelector("[data-nav-toggle]");
+  const navLinks = document.querySelector(".nav-links");
+  if (navToggle && navLinks) {
+    navToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+      navToggle.setAttribute("aria-label", isOpen ? "Menyunu bağla" : "Menyunu aç");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".nav") && navLinks.classList.contains("open")) {
+        navLinks.classList.remove("open");
+        navToggle.setAttribute("aria-expanded", "false");
+        navToggle.setAttribute("aria-label", "Menyunu aç");
+      }
+    });
+
+    navLinks.addEventListener("click", (e) => {
+      if (e.target.closest("a")) {
+        navLinks.classList.remove("open");
+        navToggle.setAttribute("aria-expanded", "false");
+        navToggle.setAttribute("aria-label", "Menyunu aç");
+      }
+    });
+  }
+
   // Lightbox with navigation, keyboard, and swipe
   const lb = document.getElementById("lb");
   if (lb) {
